@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>mixifood.vn – Tên miền đang rao bán</title>
-  <meta name="description" content="Tên miền premium mixifood.vn đang rao bán. Phù hợp thương hiệu thực phẩm, snack, đồ ăn vặt liên quan Mixi Gaming." />
+  <title>mixifood.vn &amp; mixifood.com.vn – Tên miền đang rao bán</title>
+  <meta name="description" content="Tên miền premium mixifood.vn và mixifood.com.vn đang rao bán. Phù hợp thương hiệu thực phẩm, snack, đồ ăn vặt liên quan Mixi Gaming." />
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
 
@@ -87,8 +87,14 @@
       50%      { box-shadow: 0 0 0 10px rgba(224,48,48,0); }
     }
 
+    .domains-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
     .domain-name {
-      font-size: clamp(2.8rem, 9vw, 6rem);
+      font-size: clamp(2.4rem, 7.5vw, 5.2rem);
       font-weight: 900;
       line-height: 1.05;
       letter-spacing: -.02em;
@@ -97,78 +103,31 @@
     .domain-name .food  { color: var(--yellow); }
     .domain-name .tld   { color: rgba(255,255,255,.65); font-size: .65em; }
 
-    .tagline {
-      margin-top: 16px;
-      font-size: clamp(1rem, 2.5vw, 1.35rem);
-      font-weight: 700;
-      color: rgba(255,255,255,.8);
-      max-width: 540px;
-    }
-
-    /* ── STATS ROW ── */
-    .stats {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 16px;
-      padding: 32px 20px;
-    }
-    .stat-card {
-      background: rgba(255,255,255,.07);
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 16px;
-      padding: 20px 28px;
-      text-align: center;
-      min-width: 150px;
-      backdrop-filter: blur(6px);
-    }
-    .stat-card .val {
-      font-size: 2rem;
+    .domain-sep {
+      font-size: clamp(.9rem, 2vw, 1.15rem);
       font-weight: 900;
-      color: var(--yellow);
-      display: block;
-    }
-    .stat-card .lbl {
-      font-size: .82rem;
-      color: rgba(255,255,255,.65);
-      margin-top: 4px;
+      color: rgba(255,255,255,.4);
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      margin: 2px 0;
     }
 
-    /* ── WHY BUY ── */
-    .section {
-      padding: 40px 20px;
-      max-width: 900px;
-      margin: 0 auto;
+    .domain-name.secondary {
+      font-size: clamp(1.8rem, 5.5vw, 3.8rem);
+      opacity: .85;
     }
-    .section-title {
-      font-size: 1.6rem;
+
+    .package-tag {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--lime), #2ecc71);
+      color: #0f3d1e;
+      font-size: .75rem;
       font-weight: 900;
-      text-align: center;
-      margin-bottom: 28px;
-    }
-    .section-title span { color: var(--lime); }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 18px;
-    }
-    .card {
-      background: rgba(255,255,255,.07);
-      border: 1px solid rgba(255,255,255,.1);
-      border-radius: 18px;
-      padding: 24px 22px;
-    }
-    .card-icon { font-size: 2rem; margin-bottom: 10px; }
-    .card h3   { font-size: 1.05rem; font-weight: 900; margin-bottom: 6px; }
-    .card p    { font-size: .88rem; color: rgba(255,255,255,.7); line-height: 1.55; }
-
-    /* ── DIVIDER ── */
-    .divider {
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--lime), transparent);
-      margin: 0 40px;
-      opacity: .35;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      padding: 4px 14px;
+      border-radius: 999px;
+      margin-bottom: 14px;
     }
 
     /* ── CTA ── */
@@ -229,11 +188,6 @@
       border-top: 1px solid rgba(255,255,255,.07);
     }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 480px) {
-      .stats { gap: 10px; }
-      .stat-card { padding: 16px 18px; min-width: 120px; }
-    }
   </style>
 </head>
 <body>
@@ -251,67 +205,19 @@
 <!-- ── HERO ── -->
 <section class="hero">
   <div class="badge">Tên miền đang rao bán</div>
+  <div class="package-tag">Combo 2 tên miền</div>
 
-  <h1 class="domain-name">
-    <span class="mixi">mixi</span><span class="food">food</span><span class="tld">.vn</span>
-  </h1>
+  <div class="domains-wrapper">
+    <h1 class="domain-name">
+      <span class="mixi">mixi</span><span class="food">food</span><span class="tld">.vn</span>
+    </h1>
+    <div class="domain-sep">&amp;</div>
+    <h1 class="domain-name secondary">
+      <span class="mixi">mixi</span><span class="food">food</span><span class="tld">.com.vn</span>
+    </h1>
+  </div>
 
-  <p class="tagline">
-    Tên miền premium cho thương hiệu thực phẩm &amp; snack<br>
-    liên kết chặt chẽ cộng đồng Mixi Gaming Việt Nam 🇻🇳
-  </p>
 </section>
-
-<!-- ── STATS ── -->
-<div class="stats">
-  <div class="stat-card">
-    <span class="val">10+</span>
-    <span class="lbl">ký tự ngắn gọn</span>
-  </div>
-  <div class="stat-card">
-    <span class="val">.vn</span>
-    <span class="lbl">đuôi quốc gia uy tín</span>
-  </div>
-  <div class="stat-card">
-    <span class="val">1</span>
-    <span class="lbl">tên miền duy nhất</span>
-  </div>
-  <div class="stat-card">
-    <span class="val">🔥</span>
-    <span class="lbl">trending Mixi Food</span>
-  </div>
-</div>
-
-<div class="divider"></div>
-
-<!-- ── WHY BUY ── -->
-<section class="section">
-  <h2 class="section-title">Tại sao nên mua <span>mixifood.vn</span>?</h2>
-  <div class="cards">
-    <div class="card">
-      <div class="card-icon">🎮</div>
-      <h3>Gắn liền Mixi Gaming</h3>
-      <p>Mixi là streamer hàng đầu Việt Nam với hàng triệu fan. "MixiFood" là từ khóa nhận diện thương hiệu cực mạnh trong cộng đồng.</p>
-    </div>
-    <div class="card">
-      <div class="card-icon">🍗</div>
-      <h3>Thị trường snack bùng nổ</h3>
-      <p>Khô gà lá chanh, đồ ăn vặt online tăng trưởng mạnh. Tên miền phù hợp hoàn hảo cho shop snack, thực phẩm ăn vặt.</p>
-    </div>
-    <div class="card">
-      <div class="card-icon">📈</div>
-      <h3>SEO &amp; thương hiệu ngay</h3>
-      <p>Tên miền .vn dễ nhớ, dễ gõ, giúp khách hàng tìm thấy bạn nhanh hơn trên Google và các nền tảng mạng xã hội.</p>
-    </div>
-    <div class="card">
-      <div class="card-icon">💎</div>
-      <h3>Tài sản số lâu dài</h3>
-      <p>Tên miền premium tăng giá trị theo thời gian. Đầu tư một lần, sở hữu thương hiệu độc quyền mãi mãi.</p>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
 
 <!-- ── CTA ── -->
 <section class="cta-section">
