@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mixifood.vn – Tên miền đang rao bán</title>
+  <meta name="description" content="Tên miền premium mixifood.vn đang rao bán. Phù hợp thương hiệu thực phẩm, snack, đồ ăn vặt liên quan Mixi Gaming." />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green:  #1a7a3e;
+      --lime:   #4cbb3c;
+      --red:    #e03030;
+      --yellow: #f5c842;
+      --bg:     #0f3d1e;
+      --card:   #ffffff;
+      --text:   #1a1a1a;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--bg);
+      color: var(--card);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 20px 40px;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(76,187,60,.25) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 30%, rgba(245,200,66,.15) 0%, transparent 55%);
+      pointer-events: none;
+    }
+
+    /* floating food emojis */
+    .floaties span {
+      position: absolute;
+      font-size: clamp(1.4rem, 3vw, 2.4rem);
+      animation: drift 8s ease-in-out infinite;
+      opacity: .55;
+      user-select: none;
+    }
+    .floaties span:nth-child(1)  { top: 8%;  left: 6%;  animation-delay: 0s;   }
+    .floaties span:nth-child(2)  { top: 15%; right: 8%; animation-delay: 1.2s; }
+    .floaties span:nth-child(3)  { top: 65%; left: 4%;  animation-delay: 2.4s; }
+    .floaties span:nth-child(4)  { top: 72%; right: 6%; animation-delay: 0.8s; }
+    .floaties span:nth-child(5)  { top: 40%; left: 2%;  animation-delay: 3s;   }
+    .floaties span:nth-child(6)  { top: 30%; right: 3%; animation-delay: 1.8s; }
+    @keyframes drift {
+      0%,100% { transform: translateY(0) rotate(0deg);   }
+      50%      { transform: translateY(-18px) rotate(8deg); }
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--red);
+      color: #fff;
+      font-size: .8rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      padding: 5px 16px;
+      border-radius: 999px;
+      margin-bottom: 18px;
+      animation: pulse-badge 2s ease-in-out infinite;
+    }
+    @keyframes pulse-badge {
+      0%,100% { box-shadow: 0 0 0 0 rgba(224,48,48,.6); }
+      50%      { box-shadow: 0 0 0 10px rgba(224,48,48,0); }
+    }
+
+    .domain-name {
+      font-size: clamp(2.8rem, 9vw, 6rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -.02em;
+    }
+    .domain-name .mixi  { color: var(--lime); }
+    .domain-name .food  { color: var(--yellow); }
+    .domain-name .tld   { color: rgba(255,255,255,.65); font-size: .65em; }
+
+    .tagline {
+      margin-top: 16px;
+      font-size: clamp(1rem, 2.5vw, 1.35rem);
+      font-weight: 700;
+      color: rgba(255,255,255,.8);
+      max-width: 540px;
+    }
+
+    /* ── STATS ROW ── */
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      padding: 32px 20px;
+    }
+    .stat-card {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 16px;
+      padding: 20px 28px;
+      text-align: center;
+      min-width: 150px;
+      backdrop-filter: blur(6px);
+    }
+    .stat-card .val {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--yellow);
+      display: block;
+    }
+    .stat-card .lbl {
+      font-size: .82rem;
+      color: rgba(255,255,255,.65);
+      margin-top: 4px;
+    }
+
+    /* ── WHY BUY ── */
+    .section {
+      padding: 40px 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .section-title {
+      font-size: 1.6rem;
+      font-weight: 900;
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .section-title span { color: var(--lime); }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 18px;
+    }
+    .card {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 18px;
+      padding: 24px 22px;
+    }
+    .card-icon { font-size: 2rem; margin-bottom: 10px; }
+    .card h3   { font-size: 1.05rem; font-weight: 900; margin-bottom: 6px; }
+    .card p    { font-size: .88rem; color: rgba(255,255,255,.7); line-height: 1.55; }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--lime), transparent);
+      margin: 0 40px;
+      opacity: .35;
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      text-align: center;
+      padding: 50px 20px 60px;
+    }
+    .cta-section h2 {
+      font-size: clamp(1.5rem, 4vw, 2.4rem);
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+    .cta-section p {
+      color: rgba(255,255,255,.65);
+      margin-bottom: 32px;
+      font-size: 1rem;
+      max-width: 420px;
+      margin-inline: auto;
+    }
+
+    .btn-contact {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #1877f2;
+      color: #fff;
+      font-family: inherit;
+      font-size: 1.05rem;
+      font-weight: 900;
+      padding: 16px 36px;
+      border-radius: 999px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: transform .15s, box-shadow .15s;
+      box-shadow: 0 6px 28px rgba(24,119,242,.45);
+    }
+    .btn-contact:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 36px rgba(24,119,242,.6);
+    }
+    .btn-contact svg {
+      width: 22px; height: 22px; fill: #fff;
+    }
+
+    .note {
+      margin-top: 18px;
+      font-size: .82rem;
+      color: rgba(255,255,255,.45);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: .78rem;
+      color: rgba(255,255,255,.3);
+      border-top: 1px solid rgba(255,255,255,.07);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 480px) {
+      .stats { gap: 10px; }
+      .stat-card { padding: 16px 18px; min-width: 120px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Floating food emojis -->
+<div class="floaties" aria-hidden="true">
+  <span>🍗</span>
+  <span>🌶️</span>
+  <span>🍋</span>
+  <span>🐔</span>
+  <span>🧄</span>
+  <span>🥢</span>
+</div>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="badge">Tên miền đang rao bán</div>
+
+  <h1 class="domain-name">
+    <span class="mixi">mixi</span><span class="food">food</span><span class="tld">.vn</span>
+  </h1>
+
+  <p class="tagline">
+    Tên miền premium cho thương hiệu thực phẩm &amp; snack<br>
+    liên kết chặt chẽ cộng đồng Mixi Gaming Việt Nam 🇻🇳
+  </p>
+</section>
+
+<!-- ── STATS ── -->
+<div class="stats">
+  <div class="stat-card">
+    <span class="val">10+</span>
+    <span class="lbl">ký tự ngắn gọn</span>
+  </div>
+  <div class="stat-card">
+    <span class="val">.vn</span>
+    <span class="lbl">đuôi quốc gia uy tín</span>
+  </div>
+  <div class="stat-card">
+    <span class="val">1</span>
+    <span class="lbl">tên miền duy nhất</span>
+  </div>
+  <div class="stat-card">
+    <span class="val">🔥</span>
+    <span class="lbl">trending Mixi Food</span>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ── WHY BUY ── -->
+<section class="section">
+  <h2 class="section-title">Tại sao nên mua <span>mixifood.vn</span>?</h2>
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon">🎮</div>
+      <h3>Gắn liền Mixi Gaming</h3>
+      <p>Mixi là streamer hàng đầu Việt Nam với hàng triệu fan. "MixiFood" là từ khóa nhận diện thương hiệu cực mạnh trong cộng đồng.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🍗</div>
+      <h3>Thị trường snack bùng nổ</h3>
+      <p>Khô gà lá chanh, đồ ăn vặt online tăng trưởng mạnh. Tên miền phù hợp hoàn hảo cho shop snack, thực phẩm ăn vặt.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📈</div>
+      <h3>SEO &amp; thương hiệu ngay</h3>
+      <p>Tên miền .vn dễ nhớ, dễ gõ, giúp khách hàng tìm thấy bạn nhanh hơn trên Google và các nền tảng mạng xã hội.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">💎</div>
+      <h3>Tài sản số lâu dài</h3>
+      <p>Tên miền premium tăng giá trị theo thời gian. Đầu tư một lần, sở hữu thương hiệu độc quyền mãi mãi.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── CTA ── -->
+<section class="cta-section">
+  <h2>Quan tâm? Liên hệ ngay!</h2>
+  <p>Nhắn tin qua Facebook để trao đổi giá &amp; thủ tục chuyển nhượng nhanh chóng, an toàn.</p>
+
+  <a
+    class="btn-contact"
+    href="https://www.facebook.com/nnvvdd/"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <!-- Facebook icon -->
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.99 3.66 9.12 8.44 9.88v-6.99H7.9v-2.89h2.54V9.85c0-2.51 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99C18.34 21.12 22 16.99 22 12z"/>
+    </svg>
+    Nhắn tin Facebook
+  </a>
+
+  <p class="note">Giao dịch qua escrow / sàn tên miền uy tín nếu cần</p>
+</section>
+
+<footer>
+  &copy; 2026 mixifood.vn &nbsp;·&nbsp; Tên miền đang rao bán &nbsp;·&nbsp; Không phải website thương mại
+</footer>
+
+</body>
+</html>
