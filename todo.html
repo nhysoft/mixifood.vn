@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quản lý chi tiêu phòng</title>
+<style>
+  :root{
+    --bg:#0f1115; --card:#1a1d24; --card2:#222631; --line:#2d323d;
+    --txt:#e7e9ee; --muted:#9aa3b2; --accent:#4ade80; --accent2:#38bdf8;
+    --danger:#f87171; --warn:#fbbf24; --radius:14px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    background:var(--bg);color:var(--txt);line-height:1.5;padding-bottom:60px}
+  header{padding:18px 16px;background:linear-gradient(135deg,#16a34a,#0ea5e9);
+    position:sticky;top:0;z-index:10}
+  header h1{margin:0;font-size:20px}
+  header p{margin:4px 0 0;font-size:13px;opacity:.9}
+  .wrap{max-width:760px;margin:0 auto;padding:16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px;margin-bottom:16px}
+  h2{font-size:16px;margin:0 0 12px;display:flex;align-items:center;gap:8px}
+  label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}
+  input,select{width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);
+    background:var(--card2);color:var(--txt);font-size:15px}
+  input[type=checkbox]{width:auto}
+  button{cursor:pointer;border:none;border-radius:10px;padding:10px 14px;font-size:14px;
+    font-weight:600;background:var(--accent);color:#06281a}
+  button.sec{background:var(--card2);color:var(--txt);border:1px solid var(--line)}
+  button.ghost{background:transparent;color:var(--accent2);padding:4px 8px}
+  button.del{background:transparent;color:var(--danger);padding:4px 8px}
+  .row{display:flex;gap:8px;flex-wrap:wrap}
+  .row>*{flex:1;min-width:120px}
+  .members{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+  .chip{background:var(--card2);border:1px solid var(--line);border-radius:20px;
+    padding:6px 10px;display:flex;align-items:center;gap:6px;font-size:14px}
+  .pick{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .pick label{display:flex;align-items:center;gap:8px;background:var(--card2);
+    padding:8px 10px;border-radius:10px;border:1px solid var(--line);margin:0;color:var(--txt);cursor:pointer}
+  .pick .amt{flex:1;padding:6px;font-size:13px}
+  .expense{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:12px;background:var(--card2)}
+  .expense .top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+  .expense .title{font-weight:600;font-size:15px}
+  .expense .meta{font-size:12px;color:var(--muted);margin-top:2px}
+  .total{font-weight:700;color:var(--accent)}
+  .pay{display:flex;align-items:center;justify-content:space-between;gap:8px;
+    padding:7px 0;border-top:1px dashed var(--line)}
+  .pay.paid .who{color:var(--accent)}
+  .pay .who{display:flex;align-items:center;gap:8px;font-size:14px}
+  .badge{font-size:11px;padding:2px 7px;border-radius:20px;background:#3f2a00;color:var(--warn)}
+  .badge.ok{background:#06281a;color:var(--accent)}
+  .badge.buyer{background:#0c2a3a;color:var(--accent2)}
+  .sum{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+  .pos{color:var(--accent)} .neg{color:var(--danger)}
+  .empty{color:var(--muted);text-align:center;padding:20px;font-size:14px}
+  .hint{font-size:12px;color:var(--muted);margin-top:8px}
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  details summary{cursor:pointer;font-size:13px;color:var(--accent2);margin-top:6px}
+  .mini{font-size:12px;color:var(--muted)}
+  #status{font-size:12px;padding:3px 8px;border-radius:20px;background:#3f2a00;color:var(--warn)}
+  #status.on{background:#06281a;color:var(--accent)}
+  #status.err{background:#3a0c0c;color:var(--danger)}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap" style="padding:0;display:flex;justify-content:space-between;align-items:center;gap:8px">
+    <div>
+      <h1>🍲 Quản lý chi tiêu phòng</h1>
+      <p>Đi chợ – nấu ăn – chia tiền · đồng bộ real-time</p>
+    </div>
+    <span id="status">Đang kết nối…</span>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- Phòng -->
+  <div class="card">
+    <h2>🚪 Mã phòng</h2>
+    <div class="row">
+      <input id="roomCode" placeholder="vd: phong-301">
+      <button style="flex:0" onclick="changeRoom()">Vào phòng</button>
+    </div>
+    <p class="hint">Cả 5 người nhập <b>cùng một mã phòng</b> để xem chung dữ liệu.</p>
+  </div>
+
+  <!-- Thành viên -->
+  <div class="card">
+    <h2>👥 Thành viên phòng</h2>
+    <div class="members" id="memberList"></div>
+    <div class="row">
+      <input id="newMember" placeholder="Tên thành viên mới">
+      <button onclick="addMember()" style="flex:0">+ Thêm</button>
+    </div>
+  </div>
+
+  <!-- Thêm khoản chi -->
+  <div class="card">
+    <h2>➕ Ghi khoản chi (bữa ăn / lần đi chợ)</h2>
+    <label>Ghi chú (mua gì, bữa nào)</label>
+    <input id="note" placeholder="VD: Đi chợ nấu lẩu tối T7">
+    <div class="row">
+      <div>
+        <label>Ngày</label>
+        <input type="date" id="date">
+      </div>
+      <div>
+        <label>Người mua / ứng tiền</label>
+        <select id="buyer"></select>
+      </div>
+    </div>
+    <label>Tổng tiền (đ)</label>
+    <input type="number" id="total" placeholder="0" oninput="splitEqual()">
+
+    <label>Nhóm người sử dụng (ai ăn bữa này)</label>
+    <div class="pick" id="pickList"></div>
+    <div class="toolbar">
+      <button class="sec" onclick="selectAll(true)">Chọn tất cả</button>
+      <button class="sec" onclick="selectAll(false)">Bỏ chọn</button>
+      <button class="sec" onclick="splitEqual()">Chia đều</button>
+    </div>
+    <p class="hint">Mặc định chia đều, nhưng có thể sửa số tiền từng người (mỗi người chia khác nhau). Người mua tự động được tính là đã trả.</p>
+    <div class="toolbar">
+      <button onclick="saveExpense()">💾 Lưu khoản chi</button>
+    </div>
+  </div>
+
+  <!-- Tổng kết -->
+  <div class="card">
+    <h2>📊 Tổng kết công nợ</h2>
+    <div id="summary"></div>
+  </div>
+
+  <!-- Danh sách -->
+  <div class="card">
+    <h2>🧾 Các khoản chi</h2>
+    <div id="expenseList"></div>
+  </div>
+
+</div>
+
+<script type="module">
+// ====== CẤU HÌNH FIREBASE ======
+const firebaseConfig = {
+  apiKey: "AIzaSyDLDBp4ZZeadv8V7Q50YEf2XGQlRyiwyQA",
+  authDomain: "todolist-8232d.firebaseapp.com",
+  projectId: "todolist-8232d",
+  storageBucket: "todolist-8232d.firebasestorage.app",
+  messagingSenderId: "404947619618",
+  appId: "1:404947619618:web:467be8c7898268b378df7b"
+};
+// ================================
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+import { getFirestore, doc, collection, onSnapshot, setDoc, updateDoc, deleteDoc }
+  from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+
+const money = n => (Number(n)||0).toLocaleString('vi-VN') + 'đ';
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+const $ = id => document.getElementById(id);
+const setStatus = (t,cls='') => { const s=$('status'); s.textContent=t; s.className=cls; };
+
+let db, data = { members: [], expenses: {} };
+let room = localStorage.getItem('roomCode') || 'phong-cua-toi';
+let unsubs = [];
+
+const roomDoc      = () => doc(db, 'rooms', room);
+const expensesCol  = () => collection(db, 'rooms', room, 'expenses');
+const expenseDoc   = id => doc(db, 'rooms', room, 'expenses', id);
+
+try {
+  const app = initializeApp(firebaseConfig);
+  db = getFirestore(app);
+} catch(e){
+  setStatus('Chưa cấu hình Firebase', 'err');
+  console.error(e);
+}
+
+function listen(){
+  if(!db) return;
+  unsubs.forEach(u=>u()); unsubs = [];
+  $('roomCode').value = room;
+  setStatus('Đang kết nối…');
+
+  unsubs.push(onSnapshot(roomDoc(), snap => {
+    const v = snap.data();
+    if(!v || !v.members || !v.members.length){
+      data.members = ["Người 1","Người 2","Người 3","Người 4","Người 5"];
+      setDoc(roomDoc(), { members: data.members }, { merge:true });
+    } else {
+      data.members = v.members;
+    }
+    setStatus('● Đã đồng bộ', 'on');
+    renderAll();
+  }, err => { setStatus('Lỗi kết nối', 'err'); console.error(err); }));
+
+  unsubs.push(onSnapshot(expensesCol(), snap => {
+    data.expenses = {};
+    snap.forEach(d => data.expenses[d.id] = d.data());
+    setStatus('● Đã đồng bộ', 'on');
+    renderAll();
+  }, err => { setStatus('Lỗi kết nối', 'err'); console.error(err); }));
+}
+
+window.changeRoom = function(){
+  const r = $('roomCode').value.trim().toLowerCase().replace(/[.#$\[\]/ ]/g,'-');
+  if(!r) return;
+  room = r; localStorage.setItem('roomCode', room);
+  listen();
+};
+
+/* ---------- Thành viên ---------- */
+window.addMember = function(){
+  const i = $('newMember'); const name = i.value.trim();
+  if(!name) return;
+  if(data.members.includes(name)){ alert('Tên đã tồn tại'); return; }
+  setDoc(roomDoc(), { members: [...data.members, name] }, { merge:true });
+  i.value='';
+};
+window.removeMember = function(name){
+  if(!confirm('Xóa thành viên "'+name+'"?')) return;
+  setDoc(roomDoc(), { members: data.members.filter(m=>m!==name) }, { merge:true });
+};
+function renderMembers(){
+  $('memberList').innerHTML = data.members.map(m=>
+    `<span class="chip">${m}<button class="del" style="padding:0 4px" onclick="removeMember('${m.replace(/'/g,"\\'")}')">✕</button></span>`
+  ).join('') || '<span class="mini">Chưa có thành viên</span>';
+}
+
+/* ---------- Form khoản chi ---------- */
+function renderForm(){
+  $('buyer').innerHTML = data.members.map(m=>`<option>${m}</option>`).join('');
+  $('pickList').innerHTML = data.members.map(m=>`
+    <label>
+      <input type="checkbox" class="use" value="${m}" onchange="splitEqual()">
+      <span>${m}</span>
+      <input type="number" class="amt" data-name="${m}" placeholder="0">
+    </label>`).join('');
+  if(!$('date').value) $('date').valueAsDate = new Date();
+}
+function getChecked(){ return [...document.querySelectorAll('.use:checked')].map(c=>c.value); }
+window.selectAll = function(v){ document.querySelectorAll('.use').forEach(c=>c.checked=v); splitEqual(); };
+window.splitEqual = function(){
+  const names = getChecked();
+  const total = Number($('total').value)||0;
+  const each = names.length ? Math.round(total/names.length) : 0;
+  document.querySelectorAll('.amt').forEach(inp=>{
+    const on = names.includes(inp.dataset.name);
+    inp.disabled = !on;
+    inp.value = on ? each : '';
+  });
+};
+window.saveExpense = function(){
+  const note = $('note').value.trim();
+  const date = $('date').value;
+  const buyer = $('buyer').value;
+  const total = Number($('total').value)||0;
+  const names = getChecked();
+  if(!names.length){ alert('Chọn ít nhất 1 người sử dụng'); return; }
+  if(!total){ alert('Nhập tổng tiền'); return; }
+  const shares = names.map(n=>{
+    const inp = document.querySelector('.amt[data-name="'+n+'"]');
+    return { name:n, amount: Number(inp.value)||0, paid: n===buyer };
+  });
+  const id = uid();
+  setDoc(expenseDoc(id),
+      { id, note, date, buyer, total, shares, createdAt: Date.now() });
+  $('note').value=''; $('total').value=''; selectAll(false);
+};
+
+/* ---------- Hiển thị khoản chi ---------- */
+window.togglePaid = function(id, name, idx){
+  const e = data.expenses[id]; if(!e) return;
+  const shares = (e.shares||[]).map((s,i)=> i===idx ? {...s, paid: !s.paid} : s);
+  updateDoc(expenseDoc(id), { shares });
+};
+window.delExpense = function(id){
+  if(!confirm('Xóa khoản chi này?')) return;
+  deleteDoc(expenseDoc(id));
+};
+function expenseArray(){
+  return Object.values(data.expenses).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+}
+function renderExpenses(){
+  const el = $('expenseList');
+  const arr = expenseArray();
+  if(!arr.length){ el.innerHTML='<div class="empty">Chưa có khoản chi nào</div>'; return; }
+  el.innerHTML = arr.map(e=>{
+    const shares = e.shares||[];
+    const paidSum = shares.filter(s=>s.paid).reduce((a,s)=>a+(s.amount||0),0);
+    const rows = shares.map((s,idx)=>{
+      const isBuyer = s.name===e.buyer;
+      const badge = isBuyer ? '<span class="badge buyer">Người mua</span>'
+        : (s.paid ? '<span class="badge ok">Đã trả</span>' : '<span class="badge">Chưa trả</span>');
+      return `<div class="pay ${s.paid?'paid':''}">
+        <span class="who">
+          <input type="checkbox" ${s.paid?'checked':''} onchange="togglePaid('${e.id}','${(s.name||'').replace(/'/g,"\\'")}',${idx})">
+          ${s.name} ${badge}
+        </span>
+        <span>${money(s.amount)}</span>
+      </div>`;
+    }).join('');
+    return `<div class="expense">
+      <div class="top">
+        <div>
+          <div class="title">${e.note||'(không ghi chú)'}</div>
+          <div class="meta">📅 ${e.date||'—'} · 🛒 ${e.buyer} ứng tiền · ${shares.length} người</div>
+        </div>
+        <div style="text-align:right">
+          <div class="total">${money(e.total)}</div>
+          <button class="del" onclick="delExpense('${e.id}')">Xóa</button>
+        </div>
+      </div>
+      ${rows}
+      <div class="meta" style="margin-top:6px">Đã thu: ${money(paidSum)} / ${money(e.total)}</div>
+    </div>`;
+  }).join('');
+}
+
+/* ---------- Tổng kết ---------- */
+function renderSummary(){
+  const bal = {}, owedToMe = {};
+  data.members.forEach(m=>{ bal[m]=0; owedToMe[m]=0; });
+  expenseArray().forEach(e=>{
+    (e.shares||[]).forEach(s=>{
+      if(bal[s.name]===undefined){ bal[s.name]=0; owedToMe[s.name]=0; }
+      bal[s.name] -= (s.amount||0);
+      if(!s.paid && s.name!==e.buyer)
+        owedToMe[e.buyer] = (owedToMe[e.buyer]||0) + (s.amount||0);
+    });
+    if(bal[e.buyer]===undefined) bal[e.buyer]=0;
+    bal[e.buyer] += (e.total||0);
+  });
+  const sum = $('summary');
+  if(!expenseArray().length){ sum.innerHTML='<div class="empty">Chưa có dữ liệu</div>'; return; }
+  sum.innerHTML = Object.keys(bal).map(m=>{
+    const v = Math.round(bal[m]);
+    const cls = v>0?'pos':(v<0?'neg':'');
+    const txt = v>0?`được nhận lại ${money(v)}`:(v<0?`còn phải trả ${money(-v)}`:'đã cân bằng');
+    const wait = owedToMe[m]>0 ? ` · đang chờ thu ${money(owedToMe[m])}` : '';
+    return `<div class="sum"><span>${m}</span><span class="${cls}">${txt}${wait}</span></div>`;
+  }).join('');
+}
+
+function renderAll(){ renderMembers(); renderForm(); renderExpenses(); renderSummary(); }
+
+if(db) listen();
+</script>
+</body>
+</html>
